@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LanguageProvider } from './LanguageContext';
 import { NavBar } from './components/NavBar';
 import { Hero } from './components/Hero';
 import { ProblemSolution } from './components/ProblemSolution';
@@ -34,23 +35,25 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 selection:bg-brand-highlight selection:text-white ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
-      <NavBar theme={theme} toggleTheme={toggleTheme} />
-      
-      <main>
-        <Hero theme={theme} />
-        <ProblemSolution theme={theme} />
-        <Materials theme={theme} />
-        <Features theme={theme} />
-        <ExplodedView theme={theme} />
-        <CircuitDesign theme={theme} />
-        <TechnicalSpecs theme={theme} />
-        <Testimonials theme={theme} />
-        <Contact theme={theme} />
-      </main>
+    <LanguageProvider>
+      <div className={`min-h-screen transition-colors duration-500 selection:bg-brand-highlight selection:text-white ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
+        <NavBar theme={theme} toggleTheme={toggleTheme} />
 
-      <Footer theme={theme} />
-    </div>
+        <main>
+          <Hero theme={theme} />
+          <ProblemSolution theme={theme} />
+          <Materials theme={theme} />
+          <Features theme={theme} />
+          <ExplodedView theme={theme} />
+          <CircuitDesign theme={theme} />
+          <TechnicalSpecs theme={theme} />
+          <Testimonials theme={theme} />
+          <Contact theme={theme} />
+        </main>
+
+        <Footer theme={theme} />
+      </div>
+    </LanguageProvider>
   );
 };
 

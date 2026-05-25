@@ -1,50 +1,28 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface FeaturesProps {
     theme: 'light' | 'dark';
 }
 
-const features = [
-  {
-    id: 'f1',
-    title: 'Stabil mikroklíma',
-    description: 'A belső tér úgy van kialakítva, hogy a leletet minimális környezeti ingadozás érje, csökkentve az oxidáció és a hirtelen anyagváltozás kockázatát.',
-    image: 'https://i.postimg.cc/T1SYvkQX/Belso-retegek-egyutt.png'
-  },
-  {
-    id: 'f2',
-    title: 'Védett rögzítés',
-    description: 'A moduláris belső elrendezés a leleteket biztonságosan, mégis kíméletesen fogja meg – nincs felesleges mozgás, nincs ütközés.',
-    image: 'https://i.postimg.cc/9f3R7fd4/Fogo-kozeli.png'
-  },
-  {
-    id: 'f3',
-    title: 'Szenzorvezérelt figyelés',
-    description: 'Integrált szenzorok figyelik a páratartalmat, hőmérsékletet és fényviszonyokat, és lehetőséget adnak a későbbi adatnaplózásra.',
-    image: 'https://i.postimg.cc/J4kRB5Pd/Elektronika-dobozban.png'
-  },
-  {
-    id: 'f4',
-    title: 'Terepre tervezett kialakítás',
-    description: 'Könnyű, mégis masszív, könnyen tisztítható, esőben, sárban, terepjáró csomagtartójában is otthon érzi magát.',
-    image: 'https://i.postimg.cc/28Q8KxvP/Robantott-osszes.png'
-  },
-  {
-    id: 'f5',
-    title: 'Dokumentációra kész',
-    description: 'A BARCA használata egységes működést kényszerít ki: minden lelethez tartozik hely, idő, megtaláló és állapot – semmi sem vész el útközben.',
-    image: 'https://i.postimg.cc/G3kCLm25/salalala.jpg'
-  }
+const featureImages = [
+  { id: 'f1', image: 'https://i.postimg.cc/T1SYvkQX/Belso-retegek-egyutt.png' },
+  { id: 'f2', image: 'https://i.postimg.cc/9f3R7fd4/Fogo-kozeli.png' },
+  { id: 'f3', image: 'https://i.postimg.cc/J4kRB5Pd/Elektronika-dobozban.png' },
+  { id: 'f4', image: 'https://i.postimg.cc/28Q8KxvP/Robantott-osszes.png' },
+  { id: 'f5', image: 'https://i.postimg.cc/G3kCLm25/salalala.jpg' },
 ];
 
 const AccordionItem: React.FC<{
-  feature: (typeof features)[0];
+  title: string;
+  description: string;
+  id: string;
   isOpen: boolean;
   onToggle: () => void;
   theme: 'light' | 'dark';
-}> = ({ feature, isOpen, onToggle, theme }) => {
+}> = ({ title, description, isOpen, onToggle, theme }) => {
   return (
     <div className={`py-4 border-b last:border-b-0 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
       <motion.button
@@ -58,7 +36,7 @@ const AccordionItem: React.FC<{
               <Plus size={16} className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} />
             </motion.div>
           </div>
-          <span className={`text-lg font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{feature.title}</span>
+          <span className={`text-lg font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{title}</span>
         </div>
       </motion.button>
       <AnimatePresence>
@@ -71,7 +49,7 @@ const AccordionItem: React.FC<{
             className="overflow-hidden"
           >
             <p className={`pl-11 leading-relaxed ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-              {feature.description}
+              {description}
             </p>
           </motion.div>
         )}
@@ -81,22 +59,24 @@ const AccordionItem: React.FC<{
 };
 
 export const Features: React.FC<FeaturesProps> = ({ theme }) => {
-  const [openId, setOpenId] = useState<string | null>(features[0].id);
+  const [openId, setOpenId] = useState<string | null>(featureImages[0].id);
+  const { t } = useLanguage();
+  const feat = t.features;
 
   const handleToggle = (id: string) => {
     setOpenId(openId === id ? null : id);
   };
 
-  const activeImage = features.find(f => f.id === openId)?.image || features[0].image;
+  const activeImage = featureImages.find(f => f.id === openId)?.image || featureImages[0].image;
 
   return (
     <section id="features" className={`py-24 sm:py-32 transition-colors duration-500 ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-16 text-center max-w-4xl mx-auto">
-            <h2 className="text-sm font-semibold tracking-widest text-brand-highlight uppercase mb-4">Funkciók</h2>
-            <h3 className={`text-4xl md:text-5xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Minden részlete a leletekért dolgozik.</h3>
+            <h2 className="text-sm font-semibold tracking-widest text-brand-highlight uppercase mb-4">{feat.label}</h2>
+            <h3 className={`text-4xl md:text-5xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{feat.title}</h3>
             <p className={`text-xl font-light ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                Nem csupán egy doboz. A BARCA egy precízen megtervezett rendszer, amely a terepi valóságra reagál.
+                {feat.description}
             </p>
         </div>
 
@@ -104,12 +84,14 @@ export const Features: React.FC<FeaturesProps> = ({ theme }) => {
             <div className="grid md:grid-cols-5 gap-12 md:gap-16 items-start">
             {/* Left Column: Accordion */}
             <div className="w-full md:col-span-3">
-                {features.map((feature) => (
+                {feat.items.map((item, i) => (
                 <AccordionItem
-                    key={feature.id}
-                    feature={feature}
-                    isOpen={openId === feature.id}
-                    onToggle={() => handleToggle(feature.id)}
+                    key={featureImages[i].id}
+                    id={featureImages[i].id}
+                    title={item.title}
+                    description={item.description}
+                    isOpen={openId === featureImages[i].id}
+                    onToggle={() => handleToggle(featureImages[i].id)}
                     theme={theme}
                 />
                 ))}
@@ -126,7 +108,7 @@ export const Features: React.FC<FeaturesProps> = ({ theme }) => {
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.4, ease: 'easeOut' }}
                     src={activeImage}
-                    alt={features.find(f => f.image === activeImage)?.title || 'BARCA product'}
+                    alt={feat.items[featureImages.findIndex(f => f.image === activeImage)]?.title || 'BARCA product'}
                     className="absolute w-full h-full object-cover"
                     />
                 </AnimatePresence>

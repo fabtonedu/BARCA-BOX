@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface ContactProps {
     theme: 'light' | 'dark';
@@ -7,19 +8,21 @@ interface ContactProps {
 
 export const Contact: React.FC<ContactProps> = ({ theme }) => {
   const isDark = theme === 'dark';
+  const { t } = useLanguage();
+  const c = t.contact;
 
   return (
     <section id="contact" className={`relative min-h-[80vh] flex flex-col justify-between overflow-hidden border-t pt-20 transition-colors duration-500 ${isDark ? 'bg-black border-white/10' : 'bg-white border-gray-200'}`}>
-        
+
         {/* Main Content Area */}
         <div className="relative z-20 max-w-[1400px] mx-auto w-full px-6 flex flex-col md:flex-row justify-between items-start gap-16">
-            
+
             {/* Left Side: Typography & Links */}
             <div className="flex flex-col items-start">
                 <h2 className={`text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.9] mb-12 ${isDark ? 'text-white' : 'text-black'}`}>
-                    Védelem.<br/>
-                    <span className="text-gray-500">Innováció.</span><br/>
-                    Jövő.
+                    {c.line1}<br/>
+                    <span className="text-gray-500">{c.line2}</span><br/>
+                    {c.line3}
                 </h2>
 
                 {/* Navigation / Social Links */}
@@ -32,19 +35,19 @@ export const Contact: React.FC<ContactProps> = ({ theme }) => {
             </div>
 
             {/* Right Side: CTA Card */}
-            <a 
+            <a
                 href="mailto:info@fabton.org"
                 className="group relative w-full md:w-[400px] bg-brand-highlight hover:bg-blue-600 transition-all duration-300 p-8 md:p-10 flex flex-col justify-between min-h-[200px] md:min-h-[240px] cursor-pointer"
             >
                 <div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Partneri Együttműködés</h3>
+                    <h3 className="text-2xl font-bold text-white mb-2">{c.cardTitle}</h3>
                     <p className="text-blue-100 text-sm leading-relaxed max-w-[90%]">
-                        Intézmények, kutatók és múzeumok jelentkezését várjuk. Építsük együtt a jövő régészetét.
+                        {c.cardDesc}
                     </p>
                 </div>
-                
+
                 <div className="flex items-center justify-between mt-8">
-                    <span className="text-xs font-bold text-blue-200 uppercase tracking-wider">Kapcsolatfelvétel</span>
+                    <span className="text-xs font-bold text-blue-200 uppercase tracking-wider">{c.cardCta}</span>
                     <ArrowUpRight className="text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </div>
             </a>
